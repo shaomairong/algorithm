@@ -88,7 +88,7 @@ namespace algorithm{
 // int q[N]; 使用全局数组
 int main(){
     int n;
-    
+   
     srand(time(0)); //初始化随机数种子
     scanf("%d",&n);
     int * q = new int [n]; //使用动态分配内存的数组
@@ -100,7 +100,8 @@ int main(){
     for(int i = 0;i<n;++i){
         printf("%d ",q[i]);
     }
-    
+	delete q;
+	return 0;
     
 }
     
