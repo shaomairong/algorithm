@@ -6,7 +6,7 @@
 using namespace std;
 
 namespace algorithm{
-    //
+    //做出一个划分操作:让小于划分值的在左边，等于划分值的在中间，大于划分值的在右边；以数组末尾元素作为划分值
 	std::pair<int,int> partition(int *arr,int L,int R){
         //返回等于区开始位置和结束位置的下标[start,end]构成的数组
         if(L>R){
@@ -52,23 +52,24 @@ namespace algorithm{
         quickProcess1(arr,0,N-1);
     }
 	
-	class Job{
+	class Job{ //Job类记录在什么范围上进行排序
     public:
         int l;
         int r ;
         Job(int left,int right):l(left),r(right){}
     };
-    void quickSort2(int *arr,int N){
+    void quickSort2(int *arr,int N){ //非递归（用栈)实现快速排序
         if(arr == nullptr || N<2){
             return;
         }
-        int i = rand()%N ;
+        int i = rand()%N ; //随机选择一个位置和N-1位置交换
         swap(arr[i],arr[N-1]);
-        std::pair<int,int> pair = partition(arr,0,N-1);
+        std::pair<int,int> pair = partition(arr,0,N-1); 
         std::stack<std::shared_ptr<Job>> stack;
-        stack.push(std::make_shared<Job>(0,pair.first-1));
-        stack.push(std::make_shared<Job>(pair.second+1,N-1));
-        while (!stack.empty()){
+		//得到等于区的开始结束位置就可以划分子任务了，子任务分别进栈
+        stack.push(std::make_shared<Job>(0,pair.first-1)); //左侧子任务进栈
+        stack.push(std::make_shared<Job>(pair.second+1,N-1)); //右侧子任务进栈
+        while (!stack.empty()){ //栈非空，那就从栈中取出任务进行partition
             std::shared_ptr<Job> pjob = stack.top();
             stack.pop();
             if(pjob->l < pjob->r){
