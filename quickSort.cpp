@@ -51,6 +51,36 @@ namespace algorithm{
         }
         quickProcess1(arr,0,N-1);
     }
+	void quickSort3(int *arr,int N){
+        //用栈模拟递归
+        if(arr == nullptr || N<2){
+            return;
+        }
+        std::stack<int> stack;
+        int i = rand()%N ;
+        swap(arr[i],arr[N-1]);
+        std::pair<int,int> pair = partition(arr,0,N-1); //pair.first~pair.second已经有序了
+        stack.push(0);
+        stack.push(pair.first-1); //对0~pair.fist-1进行排序
+        stack.push(pair.second+1);
+        stack.push(N-1);//对pair.second+1 ~ N-1进行排序
+        while (!stack.empty()){
+            int r = stack.top();
+            stack.pop();
+            int l = stack.top();
+            stack.pop();
+            if(l<r){
+                int i = rand()%(r-l+1) + l;
+                swap(arr[i],arr[r]);
+                pair = partition(arr,l,r);
+                stack.push(l);
+                stack.push(pair.first-1);
+                stack.push(pair.second+1);
+                stack.push(r);
+            }
+        }
+    }
+	
 	
 	class Job{ //Job类记录在什么范围上进行排序
     public:
