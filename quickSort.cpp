@@ -114,6 +114,28 @@ namespace algorithm{
 	
 	
 }
+void quickSort(int q[], int l, int r)
+{
+    if(l >= r) return; //递归终止情况
+    //第一步：分成子问题
+    int i = l - 1, j = r + 1, x = q[l+(r-l)/2];
+    //i和j指向边界的二层即i=l-1,j=r+1,因为下面是先加i和减j在进行和划分值的判断
+    while(i < j)
+    {
+        while(q[++i]<x);
+        while(q[--j]>x);
+        if(i < j) swap(q[i], q[j]);
+    }
+    //第二步：递归处理子问题
+    quickSort(q, l, j);  //推荐写成j，如果换成i那就要换三次看下面
+    quickSort(q, j+ 1, r);
+    //第三步：子问题合并.快排这一步不需要操作，但归并排序的核心在这一步骤
+    //计算x时：x = q[1+l+(r-l)/2];+1表向上取整，不能取到l的边界，否则死循环如1，2
+    //quickSort(q,l,i-1);
+    //quickSort(q,i,r);
+} 
+while循环结束后，q[l..j] <= x,q[j+1..r] >= x
+注:q[l..j] <= x意为q[l],q[l+1]...q[j-1],q[j]的所有元素都<= x
 // const int N = 1e6+10;
 // int q[N]; 使用全局数组
 int main(){
